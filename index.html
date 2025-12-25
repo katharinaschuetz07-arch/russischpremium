@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Russisch Exklusiv Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #05070a;
+            color: #d1d5db; 
+            font-family: 'Georgia', serif;
+            /* Apple iPhone Optimierung */
+            height: 100dvh; 
+            min-height: -webkit-fill-available;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .nav-top-btn {
+            background-color: #0f172a;
+            border: 1px solid #1e293b;
+            font-size: 0.6rem;
+            color: #94a3b8;
+            transition: all 0.3s ease;
+            letter-spacing: 0.05em;
+        }
+        .nav-top-btn.active {
+            border-color: #fbbf24;
+            color: #fbbf24;
+            background-color: #1e293b;
+        }
+        .recipe-card {
+            background: linear-gradient(145deg, #111827, #030712);
+            border: 1px solid #1e293b;
+            border-top: 2px solid #fbbf24;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .bottom-nav-btn {
+            background-color: #0f172a;
+            color: #fbbf24;
+            border: 1px solid #1e293b;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            height: 55px;
+            text-transform: uppercase;
+        }
+        .bottom-nav-btn:active {
+            background-color: #fbbf24;
+            color: #0a0f14;
+        }
+        .cyrillic {
+            font-family: 'Times New Roman', serif;
+            color: #ffffff;
+        }
+        .hidden { display: none !important; }
+        
+        .premium-footer {
+            border-top: 1px solid #1e293b;
+            padding: 10px;
+            text-align: center;
+            background: rgba(15, 23, 42, 0.5);
+        }
+    </style>
+</head>
+<body class="p-4">
+
+    <header class="text-center mb-3">
+        <h1 class="text-xl font-light tracking-[0.3em] text-white uppercase italic">Russisch Sprachtraining</h1>
+        <p class="text-[9px] text-amber-500 font-mono tracking-widest mt-1 uppercase">Version 2.3.4</p>
+    </header>
+
+    <nav class="grid grid-cols-4 gap-1 mb-3">
+        <button onclick="setCategory('basis')" id="btn-basis" class="nav-top-btn py-3 uppercase">Basis</button>
+        <button onclick="setCategory('alltag')" id="btn-alltag" class="nav-top-btn py-3 uppercase">Alltag</button>
+        <button onclick="setCategory('schule')" id="btn-schule" class="nav-top-btn py-3 uppercase">Schule</button>
+        <button onclick="setCategory('reise')" id="btn-reise" class="nav-top-btn py-3 uppercase">Reise</button>
+    </nav>
+
+    <main class="flex-grow flex flex-col mb-3">
+        <div id="home-screen" class="recipe-card p-6 text-center">
+            <h2 class="cyrillic text-3xl mb-4 text-amber-500 italic">Добро пожаловать</h2>
+            <p class="text-lg text-white mb-2">Willkommen, Skadi</p>
+            <p class="text-sm italic text-slate-500 px-6">Wähle oben eine Kategorie.</p>
+        </div>
+
+        <div id="learning-screen" onclick="changePhrase(1)" class="recipe-card p-6 rounded-none text-center cursor-pointer hidden">
+            <div id="counter" class="text-[9px] text-amber-600 mb-2 tracking-widest uppercase italic"></div>
+            <h2 id="phrase-ru" class="cyrillic text-3xl font-serif mb-4 leading-tight"></h2>
+            <p id="phrase-de" class="text-lg italic text-slate-400"></p>
+            <p id="phrase-phon" class="text-sm text-amber-500/40 mt-6 font-mono"></p>
+        </div>
+    </main>
+
+    <div class="flex gap-2 mb-3">
+        <button onclick="changePhrase(-1)" class="bottom-nav-btn flex-1">Zurück</button>
+        <button onclick="goHome()" class="bottom-nav-btn flex-1 border-amber-500 font-bold">Menü</button>
+        <button onclick="changePhrase(1)" class="bottom-nav-btn flex-1">Vor</button>
+    </div>
+
+    <footer class="premium-footer">
+        <p class="text-[10px] text-slate-500 tracking-wider font-light">
+            (c) Exklusive SprachApp für Skadi</br>
+             <span class="text-amber-600/80"> Unverkäufliche Premium Edition zum Testen</br></p>
+             </p></span>
+
+        </p>
+    </footer>
+
+    <script>
+        const datenbank = {
+            basis: [
+                { ru: "Привет", de: "Hallo", ph: "Pri-vét" },
+                { ru: "Как дела?", de: "Wie geht es dir?", ph: "Kak de-lá?" },
+                { ru: "Спасибо", de: "Danke", ph: "Spa-ssí-ba" },
+                { ru: "Пожалуйста", de: "Bitte", ph: "Pa-shál-sta" },
+                { ru: "Да", de: "Ja", ph: "Da" },
+                { ru: "Нет", de: "Nein", ph: "Njet" },
+                { ru: "Доброе утро", de: "Guten Morgen", ph: "Dó-bra-ye út-ra" },
+                { ru: "Добрый день", de: "Guten Tag", ph: "Dó-bry dyen" },
+                { ru: "Добрый вечер", de: "Guten Abend", ph: "Dó-bry vé-cher" },
+                { ru: "Спокойной ночи", de: "Gute Nacht", ph: "Spa-kóy-nay nó-chi" },
+                { ru: "Я тебя люблю", de: "Ich liebe dich", ph: "Ya te-byá lyu-blyú" },
+                { ru: "Меня зовут...", de: "Ich heiße...", ph: "Me-nyá za-vút" },
+                { ru: "Очень приятно", de: "Sehr erfreut", ph: "Ó-chen pri-yát-na" },
+                { ru: "Извините", de: "Entschuldigung", ph: "Iz-vi-ní-tye" },
+                { ru: "Как тебя зовут?", de: "Wie heißt du?", ph: "Kak te-byá za-vút?" },
+                { ru: "Я понимаю", de: "Ich verstehe", ph: "Ya po-ni-má-yu" },
+                { ru: "Я не понимаю", de: "Ich verstehe nicht", ph: "Ya ne po-ni-má-yu" },
+                { ru: "Хорошо", de: "Gut / Okay", ph: "Cha-ra-shó" },
+                { ru: "Пока", de: "Tschüss", ph: "Pa-ká" },
+                { ru: "До свидания", de: "Auf Wiedersehen", ph: "Do svi-dá-ni-ya" }
+            ],
+            alltag: [
+                { ru: "Сколько это стоит?", de: "Was kostet das?", ph: "Skól-ka é-ta stó-it?" },
+                { ru: "Я хочу пить", de: "Ich habe Durst", ph: "Ya ha-chú pit" },
+                { ru: "Я хочу есть", de: "Ich habe Hunger", ph: "Ya ha-chú yest" },
+                { ru: "Где магазин?", de: "Wo ist der Laden?", ph: "Gde ma-ga-zín?" },
+                { ru: "Где туалет?", de: "Wo ist die Toilette?", ph: "Gde tu-a-lét?" },
+                { ru: "Приятного аппетита", de: "Guten Appetit", ph: "Pri-yát-na-va a-pe-tí-ta" },
+                { ru: "Кофе, пожалуйста", de: "Einen Kaffee, bitte", ph: "Kó-fe pa-shál-sta" },
+                { ru: "Чай, пожалуйста", de: "Einen Tee, bitte", ph: "Chay pa-shál-sta" },
+                { ru: "Счёт, пожалуйста", de: "Die Rechnung, bitte", ph: "Schyot pa-shál-sta" },
+                { ru: "Я устал(а)", de: "Ich bin müde", ph: "Ya us-tál(-a)" },
+                { ru: "Всё в порядке", de: "Alles in Ordnung", ph: "Vsyo v pa-ryád-ke" },
+                { ru: "Я не знаю", de: "Ich weiß nicht", ph: "Ya ne zná-yu" },
+                { ru: "Помогите мне", de: "Helfen Sie mir", ph: "Pa-ma-gí-tye mnye" },
+                { ru: "Подождите", de: "Warten Sie", ph: "Pa-dash-dí-tye" },
+                { ru: "Конечно", de: "Natürlich", ph: "Ka-nyésh-na" },
+                { ru: "Мне нравится", de: "Das gefällt mir", ph: "Mne nrá-vit-sya" },
+                { ru: "Без проблем", de: "Kein Problem", ph: "Byez prab-lyém" },
+                { ru: "Что ты делаешь?", de: "Was machst du?", ph: "Shto ty dyé-la-esh?" },
+                { ru: "Я дома", de: "Ich bin zu Hause", ph: "Ya dó-ma" },
+                { ru: "Удачи!", de: "Viel Glück!", ph: "U-dá-chi!" }
+            ],
+            schule: [
+                { ru: "Учитель", de: "Lehrer", ph: "U-chí-tyel" },
+                { ru: "Школа", de: "Schule", ph: "Shkó-la" },
+                { ru: "Урок начинается", de: "Die Stunde beginnt", ph: "U-rók na-chi-ná-et-sya" },
+                { ru: "Где мой рюкзак?", de: "Wo ist mein Rucksack?", ph: "Gde moy ryuk-zák?" },
+                { ru: "Дай мне ручку", de: "Gib mir einen Stift", ph: "Day mnye rúch-ku" },
+                { ru: "Тетрадь", de: "Heft", ph: "Tet-rád" },
+                { ru: "Книга", de: "Buch", ph: "Kní-ga" },
+                { ru: "Карандаш", de: "Bleistift", ph: "Ka-ran-dásh" },
+                { ru: "Я учусь", de: "Ich lerne", ph: "Ya u-chús" },
+                { ru: "Экзамен", de: "Prüfung", ph: "Ek-sá-myen" },
+                { ru: "Слушайте внимательно", de: "Hört aufmerksam zu", ph: "Slú-shay-tye vni-má-tyel-na" },
+                { ru: "Тихо, пожалуйста", de: "Ruhe, bitte", ph: "Tí-ha pa-shál-sta" },
+                { ru: "Я готов(а)", de: "Ich bin bereit", ph: "Ya ga-tóv(-a)" },
+                { ru: "Открой окно", de: "Öffne das Fenster", ph: "At-króy ak-nó" },
+                { ru: "Закрой дверь", de: "Schließe die Tür", ph: "Sa-króy dvyer" },
+                { ru: "Какое сегодня число?", de: "Welches Datum ist heute?", ph: "Ka-kó-ye se-vód-nya chis-ló?" },
+                { ru: "У меня есть вопрос", de: "Ich habe eine Frage", ph: "U me-nyá yest va-prós" },
+                { ru: "Я всё сделал(а)", de: "Ich bin fertig", ph: "Ya vsyo sdyé-lal(-a)" },
+                { ru: "Перемена", de: "Pause", ph: "Pe-re-myé-na" },
+                { ru: "До завтра", de: "Bis morgen", ph: "Do záv-tra" }
+            ],
+            reise: [
+                { ru: "Билет", de: "Ticket", ph: "Bi-lyét" },
+                { ru: "Поехали!", de: "Los geht's!", ph: "Pa-yé-cha-li!" },
+                { ru: "Где вокзал?", de: "Wo ist der Bahnhof?", ph: "Gde vak-sál?" },
+                { ru: "Где мой отель?", de: "Wo ist mein Hotel?", ph: "Gde moy o-tél?" },
+                { ru: "Аэропорт", de: "Flughafen", ph: "A-e-ra-pórt" },
+                { ru: "Такси", de: "Taxi", ph: "Tak-sí" },
+                { ru: "Прямо", de: "Geradeaus", ph: "Prryá-ma" },
+                { ru: "Налево", de: "Links", ph: "Na-lyé-va" },
+                { ru: "Направо", de: "Rechts", ph: "Na-prá-va" },
+                { ru: "Где выход?", de: "Wo ist der Ausgang?", ph: "Gde vý-hat?" },
+                { ru: "Паспорт", de: "Reisepass", ph: "Pás-part" },
+                { ru: "Самолёт", de: "Flugzeug", ph: "Sa-ma-lyót" },
+                { ru: "Поезд", de: "Zug", ph: "Pó-est" },
+                { ru: "Машина", de: "Auto", ph: "Ma-shí-na" },
+                { ru: "У меня проблема", de: "Ich habe ein Problem", ph: "U me-nyá prab-lyé-ma" },
+                { ru: "Счастливого пути", de: "Gute Reise", ph: "Schas-lí-va-va pu-tí" },
+                { ru: "Где центр?", de: "Wo ist das Zentrum?", ph: "Gde tsentsr?" },
+                { ru: "Карта", de: "Karte", ph: "Kár-ta" },
+                { ru: "Автобус", de: "Bus", ph: "Av-tó-bus" },
+                { ru: "Метро", de: "U-Bahn", ph: "Met-ró" }
+            ]
+        };
+
+        let currentCat = null;
+        let currentIndex = 0;
+
+        function setCategory(cat) {
+            currentCat = cat;
+            currentIndex = 0;
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('learning-screen').classList.remove('hidden');
+            document.querySelectorAll('.nav-top-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + cat).classList.add('active');
+            updateUI();
+            playAudio();
+        }
+
+        function changePhrase(dir) {
+            if (!currentCat) return;
+            const list = datenbank[currentCat];
+            currentIndex += dir;
+            if (currentIndex < 0) currentIndex = list.length - 1;
+            if (currentIndex >= list.length) currentIndex = 0;
+            updateUI();
+            playAudio();
+        }
+
+        function updateUI() {
+            const item = datenbank[currentCat][currentIndex];
+            document.getElementById('phrase-ru').innerText = item.ru;
+            document.getElementById('phrase-de').innerText = item.de;
+            document.getElementById('phrase-phon').innerText = "[" + item.ph + "]";
+            document.getElementById('counter').innerText = `${currentCat.toUpperCase()} : ${currentIndex + 1} / ${datenbank[currentCat].length}`;
+        }
+
+        function playAudio() {
+            const text = datenbank[currentCat][currentIndex].ru;
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'ru-RU';
+            utterance.rate = 0.8;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function goHome() {
+            currentCat = null;
+            document.getElementById('home-screen').classList.remove('hidden');
+            document.getElementById('learning-screen').classList.add('hidden');
+            document.querySelectorAll('.nav-top-btn').forEach(b => b.classList.remove('active'));
+            window.speechSynthesis.cancel();
+        }
+    </script>
+</body>
+</html>
+
